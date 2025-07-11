@@ -5,6 +5,7 @@ import 'package:task_manager/Ui/utils/app_colors.dart';
 class TaskManagerApp extends StatefulWidget {
   const TaskManagerApp({super.key});
 
+
   @override
   State<TaskManagerApp> createState() => _TaskManagerAppState();
 }
