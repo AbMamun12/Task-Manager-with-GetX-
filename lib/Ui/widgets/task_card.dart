@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/Ui/utils/app_colors.dart';
+import 'package:task_manager/data/models/task_model.dart';
 
 class TaskCard extends StatefulWidget {
-  const TaskCard({super.key});
+  const TaskCard({super.key, required this.taskModel});
+
+  final TaskModel taskModel;
 
   @override
   State<TaskCard> createState() => _TaskCardState();
@@ -20,14 +23,14 @@ class _TaskCardState extends State<TaskCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Title of the Task',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              widget.taskModel.title ?? '',
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
 
-            const Text('Description of task'),
-            const Text('Date: 12/12/2002'),
+            Text(widget.taskModel.description ?? ''),
+            Text('Date: ${widget.taskModel.createdDate ?? ''}'),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,8 +39,14 @@ class _TaskCardState extends State<TaskCard> {
                 _buildTaskStatusChip(),
                 Wrap(
                   children: [
-                    IconButton(onPressed: _onTapEditButton, icon: Icon(Icons.edit)),
-                    IconButton(onPressed: _onTapDeleteButton, icon: Icon(Icons.delete)),
+                    IconButton(
+                      onPressed: _onTapEditButton,
+                      icon: Icon(Icons.edit),
+                    ),
+                    IconButton(
+                      onPressed: _onTapDeleteButton,
+                      icon: Icon(Icons.delete),
+                    ),
                   ],
                 ),
               ],
@@ -57,10 +66,7 @@ class _TaskCardState extends State<TaskCard> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: ['New', 'Completed', 'Cancelled', 'Progress'].map((e) {
-              return ListTile(
-                  onTap: (){},
-                  title: Text(e));
-
+              return ListTile(onTap: () {}, title: Text(e));
             }).toList(),
           ),
           actions: [

@@ -3,7 +3,7 @@ import 'package:task_manager/Ui/widgets/centered_circular_progress_indicator.dar
 import 'package:task_manager/Ui/widgets/snack_bar_message.dart';
 import 'package:task_manager/Ui/widgets/tm_app_bar.dart';
 import 'package:task_manager/data/models/network_response.dart';
-import 'package:task_manager/data/services/netword_caller.dart';
+import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
 
 class AddNewTaskScreen extends StatefulWidget {
@@ -19,57 +19,67 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
       TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _addNewTaskInProgress = false;
+  bool _shouldRefreshPreviousPage =false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: TMAppBar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 42),
-                Text(
-                  'Add New Task',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 24),
-                TextFormField(
-                  controller: _titleTEController,
-                  decoration: InputDecoration(hintText: 'Title'),
-                  validator: (String? value) {
-                    if (value?.trim().isEmpty ?? true) {
-                      return 'Enter a value';
-                    }
-                  },
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: _descriptionTEController,
-                  maxLines: 5,
-                  decoration: InputDecoration(hintText: 'Description'),
-                  validator: (String? value) {
-                    if (value?.trim().isEmpty ?? true) {
-                      return 'Enter a value';
-                    }
-                  },
-                ),
-                const SizedBox(height: 16),
-                Visibility(
-                  visible: !_addNewTaskInProgress,
-                  replacement:const CenteredCircularProgressIndicator(),
-                  child: ElevatedButton(
-                    onPressed: _onTapSubmitButton,
-                    child: Icon(Icons.arrow_circle_right_outlined),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop,result){
+        if(didPop){
+          return;
+        }
+        Navigator.pop(context,_shouldRefreshPreviousPage);
+      },
+      child: Scaffold(
+        appBar: TMAppBar(),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 42),
+                  Text(
+                    'Add New Task',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 24),
+                  TextFormField(
+                    controller: _titleTEController,
+                    decoration: InputDecoration(hintText: 'Title'),
+                    validator: (String? value) {
+                      if (value?.trim().isEmpty ?? true) {
+                        return 'Enter a value';
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _descriptionTEController,
+                    maxLines: 5,
+                    decoration: InputDecoration(hintText: 'Description'),
+                    validator: (String? value) {
+                      if (value?.trim().isEmpty ?? true) {
+                        return 'Enter a value';
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Visibility(
+                    visible: !_addNewTaskInProgress,
+                    replacement:const CenteredCircularProgressIndicator(),
+                    child: ElevatedButton(
+                      onPressed: _onTapSubmitButton,
+                      child: Icon(Icons.arrow_circle_right_outlined),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -96,6 +106,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
     _addNewTaskInProgress =false;
     setState(() {});
     if (response.isSuccess){
+      _shouldRefreshPreviousPage =true;
       _clearTextFields();
       showSnackBarMessege(context, 'New Task Added!');
 
