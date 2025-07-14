@@ -7,6 +7,7 @@ import 'package:task_manager/Ui/screens/sign_up_screen.dart';
 import 'package:task_manager/Ui/utils/app_colors.dart';
 import 'package:task_manager/Ui/widgets/screen_background.dart';
 import 'package:task_manager/Ui/widgets/snack_bar_message.dart';
+import 'package:task_manager/data/models/login_model.dart';
 import 'package:task_manager/data/models/network_response.dart';
 import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
@@ -160,11 +161,14 @@ class _SignInScreenState extends State<SignInScreen> {
     _inprogress = false;
     setState(() {});
     if (response.isSuccess) {
-      await AuthController.saveAccessToken(response.responseData['token']);
+      LoginModel loginModel =LoginModel.fromJson(response.responseData);
+      await AuthController.saveAccessToken(loginModel.token!);
+      await AuthController.saveUserData(loginModel.data!);
+
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const MainBottomNavBarScreen()),
-        (_) => false,
+            (_) => false,
       );
     } else {
       showSnackBarMessege(context, response.errorMessage, true);

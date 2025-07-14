@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 
 class TaskSummaryCard extends StatelessWidget {
-  const TaskSummaryCard({super.key, required this.title, required this.count});
+  const TaskSummaryCard({
+    super.key,
+    required this.title,
+    required this.count,
+    required this.backgroundColor, // 🆕 New parameter
+  });
 
   final String title;
   final int count;
+  final Color backgroundColor; // 🆕
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: backgroundColor, // 🆕 Apply color here
       elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: SizedBox(
         width: 110,
         child: Padding(
@@ -20,12 +27,16 @@ class TaskSummaryCard extends StatelessWidget {
             children: [
               Text(
                 '$count',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(height: 8),
-              Text(title, style: TextStyle(color: Colors.grey)),
+              Text(
+                title,
+                style: const TextStyle(color: Colors.white70),
+              ),
             ],
           ),
         ),

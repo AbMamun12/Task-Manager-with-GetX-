@@ -6,7 +6,7 @@ import 'package:task_manager/Ui/utils/app_colors.dart';
 
 class TMAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TMAppBar({super.key,
-  this.isProfileScreenopen=false
+    this.isProfileScreenopen=false
   });
 
 
@@ -35,16 +35,16 @@ class TMAppBar extends StatelessWidget implements PreferredSizeWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Abdullah Al Mamun',
-                    style: TextStyle(
+                    AuthController.userData?.fullName??'',
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   Text(
-                    'Abdullah.mamun8191@gmail.com',
-                    style: TextStyle(fontSize: 12, color: Colors.white),
+                    AuthController.userData?.email??'',
+                    style: const TextStyle(fontSize: 12, color: Colors.white),
                   ),
                 ],
               ),
@@ -55,7 +55,7 @@ class TMAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const SignInScreen()),
-                  (predicate) => false,
+                      (predicate) => false,
                 );
               },
               icon: const Icon(Icons.logout),

@@ -89,13 +89,35 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     );
   }
 
-  List<TaskSummaryCard>_getTaskSummaryCardList(){
-    List<TaskSummaryCard> taskSummaryCardList =[];
-    for(TaskStatusModel t in _taskStatusCountList){
-      taskSummaryCardList.add(TaskSummaryCard(title: t.sId!, count: t.sum??0));
+  List<TaskSummaryCard> _getTaskSummaryCardList() {
+    List<TaskSummaryCard> taskSummaryCardList = [];
+    for (TaskStatusModel t in _taskStatusCountList) {
+      taskSummaryCardList.add(
+        TaskSummaryCard(
+          title: t.sId ?? '',
+          count: t.sum ?? 0,
+          backgroundColor: _getColorForStatus(t.sId ?? ''),
+        ),
+      );
     }
     return taskSummaryCardList;
   }
+  Color _getColorForStatus(String status) {
+    switch (status.toLowerCase()) {
+      case 'new':
+        return Colors.blueAccent;
+      case 'progress':
+        return Colors.purpleAccent;
+      case 'completed':
+        return Colors.green;
+      case 'cancelled':
+        return Colors.redAccent;
+      default:
+        return Colors.grey;
+    }
+  }
+
+
 
   Future<void> _onTapAddFAB() async {
     final bool? result = await Navigator.push(
