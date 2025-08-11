@@ -9,11 +9,11 @@ class ProfileUpdateController extends GetxController {
 
   String _errorMessage = '';
   String get errorMessage => _errorMessage;
-
   Future<bool> profileUpdate(Map<String, dynamic> requestBody) async {
     bool isSuccess = false;
     _inProgress = true;
     update();
+
 
 
     final NetworkResponse response = await NetworkCaller.postRequest(

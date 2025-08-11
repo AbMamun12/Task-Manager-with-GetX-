@@ -40,7 +40,7 @@ class TaskStatusSummaryCount extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 24, right: 36),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(

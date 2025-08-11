@@ -64,4 +64,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+event_id:
+  -
+event_data:
+  { }
 
